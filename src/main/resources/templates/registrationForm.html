@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aggregated events service</title>
+</head>
+<body>
+
+<form th:action="@{/register}" th:object="${newUserFormDto}" method="post">
+    <label>E-mail:</label> <input type="email" th:field="*{email}">
+    <span th:errors="*{email}"></span>
+    <br>
+    <label>Nickname:</label> <input type="text" th:field="*{nickname}">
+    <span th:errors="*{nickname}"></span>
+    <br>
+    <label>Password:</label> <input type="password" th:field="*{password}">
+    <span th:errors="*{password}"></span>
+    <br>
+    <input type="submit" value="Register">
+</form>
+
+</body>
+</html>

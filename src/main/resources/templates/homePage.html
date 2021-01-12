@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aggregated events service</title>
+<!--    <th:block th:replace="index::headScripts"></th:block>-->
+</head>
+<body>
+
+<!--<div th:include="index.html"></div>-->
+
+<h2>Aggregated events service</h2>
+
+<div th:if="${email != null}">
+    You are logged as: <span th:text="${email}"></span>
+</div>
+
+<div th:unless="${email != null}">
+    <a th:href="@{/login}" >Login</a>
+    <a th:href="@{/register}" >Register</a>
+
+</div>
+
+</body>
+</html>
