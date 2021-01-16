@@ -12,4 +12,7 @@ public interface EventRepository extends JpaRepository <EventEntity, Long> {
     List<EventEntity> findAllByEndDate(LocalDate localDate, Sort sort);
     List<EventEntity> findAll();
     Optional<EventEntity> findById(Long id);
+    List<EventEntity> findByTitleContaining(String titlePart);
+//            , Sort sort);
+
 }

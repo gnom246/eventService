@@ -75,4 +75,16 @@ public class EventService {
                         eventEntity.getStartDateAsString(),
                         eventEntity.getEndDateAsString()));
     }
+    public List<EventShortInfo> getEventsByTitlePart(String titlePart){
+        return eventRepository.findByTitleContaining(titlePart)
+//                , Sort.by("endDate"))
+                .stream()
+                .filter(eventEntity -> eventEntity.getEndDate().isAfter(LocalDate.now()))
+                .map(eventEntity -> new EventShortInfo(eventEntity.getId(),
+                        eventEntity.getTitle(),
+                        eventEntity.getBody(),
+                        eventEntity.getStartDateAsString(),
+                        eventEntity.getEndDateAsString()))
+                .collect(Collectors.toList());
+    }
 }

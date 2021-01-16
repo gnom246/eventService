@@ -20,8 +20,13 @@
 <div th:unless="${email != null}">
     <a th:href="@{/login}" >Login</a>
     <a th:href="@{/register}" >Register</a>
-
 </div>
+
+<br>
+<form th:action="@{/find-events-by-title-part}" method="get">
+    <input type="text" name="titlePart" placeholder="Search by title part...">
+    <input type="submit" value="Search Event">
+</form>
 
 <h4>Nearest events:</h4>
 <table>
