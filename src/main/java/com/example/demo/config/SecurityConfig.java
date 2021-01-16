@@ -24,8 +24,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
+//                .antMatchers("/addEvent").hasAuthority("ROLE_USER")
+                .antMatchers("/addEvent").authenticated()
             .and()
-//                .formLogin().permitAll();
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login-submit-data")

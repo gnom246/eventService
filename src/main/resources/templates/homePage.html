@@ -13,6 +13,8 @@
 
 <div th:if="${email != null}">
     You are logged as: <span th:text="${email}"></span>
+    <br>
+    <a th:href="@{/addEvent}" >Add event</a>
 </div>
 
 <div th:unless="${email != null}">
@@ -20,6 +22,16 @@
     <a th:href="@{/register}" >Register</a>
 
 </div>
+
+<h4>Nearest events:</h4>
+<table>
+    <tr th:each="event : ${events}" >
+        <td><a th:text="${event.title}" th:href="@{/events/} + ${event.id}"></a></td>
+        <td><a th:text="${event.startDate}"></a></td>
+        <td> - <a th:text="${event.endDate}"></a></td>
+        <td><a th:text="${#strings.abbreviate(event.body, 50)}"></a></td>
+    </tr>
+</table>
 
 </body>
 </html>

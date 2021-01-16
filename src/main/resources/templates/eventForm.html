@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aggregated events service</title>
+</head>
+<body>
+
+<form th:action="@{/addEvent}" th:object="${newEventForm}" method="post">
+Title: <input type="text" th:field="*{title}" placeholder="Enter event title...">
+<span th:errors="*{title}"></span>
+<br>
+Body: <textarea th:field="*{body}" rows="10" cols="100"></textarea>
+<span th:errors="*{body}"></span>
+<br>
+    Start date: <input type="date" th:field="*{startDate}" placeholder="Enter event start date..."></input>
+    <span th:errors="*{startDate}"></span>
+    <br>
+    End date: <input type="date" th:field="*{endDate}" placeholder="Enter event end date..."></input>
+    <span th:errors="*{endDate}"></span>
+    <br>
+<input type="submit" value="Add new post">
+</form>
+
+</body>
+</html>
