@@ -6,11 +6,30 @@
 </head>
 <body>
 
-<h1 th:text="${event.title}"></h1>
-Start date: <a th:text="${event.startDate}"></a>
+<h3 th:text="${event.title}"></h3>
+<div th:text="${event.startDate}"></div>
+<div th:text="${event.endDate}"></div>
+<div th:text="${event.body}"></div>
+
 <br>
-End date: <a th:text="${event.endDate}"></a>
-<p th:text="${event.body}"></p>
+<table>
+    <label>Comments:</label>
+    <tr th:each="comment : ${comments}" >
+        <td><a th:text="${comment.commentText}"></a></td>
+        <td><a th:text="${#temporals.format(comment.added, 'yyyy-MM-dd HH:mm')}"></a></td>
+        <td><a th:text="${comment.email}"></a></td>
+    </tr>
+</table>
+<br>
+
+<div>
+  <form th:action="@{/events/{eventId}/comment/add(eventId=${event.id})}" th:object="${commentFormDto}" method="post">
+    Your comment: <textarea th:field="*{body}" rows="10" cols="50"></textarea>
+    <span th:errors="*{body}"></span>
+    <br>
+    <input type="submit" value="Add comment">
+  </form>
+</div>
 
 </body>
 </html>

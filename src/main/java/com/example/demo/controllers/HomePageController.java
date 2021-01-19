@@ -30,13 +30,5 @@ public class HomePageController {
 
         return "homePage";
     }
-    @GetMapping("/find-events-by-title-part")
-    public String showEventsByTitlePart(Model model, @RequestParam String titlePart) {
-
-        List<EventShortInfo> searchedEvents = eventService.getEventsByTitlePart(titlePart);
-        model.addAttribute("searchedEvents", searchedEvents);
-
-        return "eventSearchingResult";
-    }
 
 }

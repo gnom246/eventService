@@ -1,14 +1,15 @@
 package com.example.demo.services;
 
+import com.example.demo.dao.CommentRepository;
 import com.example.demo.dao.EventRepository;
 import com.example.demo.dao.RoleRepository;
 import com.example.demo.dao.UserRepository;
-import com.example.demo.dto.EventDetails;
-import com.example.demo.dto.EventShortInfo;
-import com.example.demo.dto.NewEventForm;
+import com.example.demo.dto.*;
+import com.example.demo.entities.CommentEntity;
 import com.example.demo.entities.EventEntity;
-import com.example.demo.entities.RoleEntity;
 import com.example.demo.entities.UserEntity;
+import com.example.demo.exception.EventNotFoundException;
+import com.example.demo.exception.UserNotFoundException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +24,13 @@ public class EventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final CommentRepository commentRepository;
 
-    public EventService(EventRepository eventRepository, UserRepository userRepository, RoleRepository roleRepository) {
+    public EventService(EventRepository eventRepository, UserRepository userRepository, RoleRepository roleRepository, CommentRepository commentRepository) {
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.commentRepository = commentRepository;
     }
 
     public void addNewEvent(NewEventForm newEventForm, String email) {
@@ -58,7 +61,7 @@ public class EventService {
 
         return eventRepository.findAll(Sort.by("endDate"))
                 .stream()
-                .filter(eventEntity -> eventEntity.getEndDate().isAfter(LocalDate.now()))
+                .filter(eventEntity -> eventEntity.getEndDate().isAfter(LocalDate.now().minusDays(1)))
                 .map(eventEntity -> new EventShortInfo(eventEntity.getId(),
                         eventEntity.getTitle(),
                         eventEntity.getBody(),
@@ -75,16 +78,74 @@ public class EventService {
                         eventEntity.getStartDateAsString(),
                         eventEntity.getEndDateAsString()));
     }
-    public List<EventShortInfo> getEventsByTitlePart(String titlePart){
-        return eventRepository.findByTitleContaining(titlePart)
-//                , Sort.by("endDate"))
-                .stream()
-                .filter(eventEntity -> eventEntity.getEndDate().isAfter(LocalDate.now()))
-                .map(eventEntity -> new EventShortInfo(eventEntity.getId(),
+    public List<EventShortInfo> getEventsByTitlePartAndPeriod(String titlePart, String period) {
+        if ("future".equals(period)) {
+            return eventRepository.findByTitleContaining(titlePart, Sort.by("endDate"))
+                    .stream()
+                    .filter(eventEntity -> eventEntity.getEndDate().isAfter(LocalDate.now()))
+                    .map(eventEntity -> new EventShortInfo(eventEntity.getId(),
+                            eventEntity.getTitle(),
+                            eventEntity.getBody(),
+                            eventEntity.getStartDateAsString(),
+                            eventEntity.getEndDateAsString()))
+                    .collect(Collectors.toList());
+
+        } else if ("presentOrFuture".equals(period)) {
+            return eventRepository.findByTitleContaining(titlePart, Sort.by("endDate"))
+                    .stream()
+                    .filter(eventEntity -> eventEntity.getEndDate().isAfter(LocalDate.now().minusDays(1)))
+                    .map(eventEntity -> new EventShortInfo(eventEntity.getId(),
+                            eventEntity.getTitle(),
+                            eventEntity.getBody(),
+                            eventEntity.getStartDateAsString(),
+                            eventEntity.getEndDateAsString()))
+                    .collect(Collectors.toList());
+        } else {
+            return eventRepository.findByTitleContaining(titlePart, Sort.by("endDate"))
+                    .stream()
+                    .map(eventEntity -> new EventShortInfo(eventEntity.getId(),
+                            eventEntity.getTitle(),
+                            eventEntity.getBody(),
+                            eventEntity.getStartDateAsString(),
+                            eventEntity.getEndDateAsString()))
+                    .collect(Collectors.toList());
+        }
+    }
+
+    public Optional<EventDetails> getSingleEventInfo(Long eventId) {
+        return eventRepository.findById(eventId)
+                .map(eventEntity -> new EventDetails(eventEntity.getId(),
                         eventEntity.getTitle(),
                         eventEntity.getBody(),
                         eventEntity.getStartDateAsString(),
-                        eventEntity.getEndDateAsString()))
-                .collect(Collectors.toList());
+                        eventEntity.getEndDateAsString()));
     }
-}
+
+    public void addNewComment(Long eventId, CommentFormDto commentFormDto, String email) {
+
+        final EventEntity eventEntity = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EventNotFoundException(eventId));
+        UserEntity userEntity = userRepository.findUserByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(email));
+
+        final CommentEntity commentEntity = new CommentEntity();
+        commentEntity.setCommentText(commentFormDto.getBody());
+        commentEntity.setEventEntity(eventEntity);
+
+        commentEntity.setUserEntity(userEntity);
+
+        commentRepository.save(commentEntity);
+    }
+
+    public List<CommentDto> getCommentsForEvent(Long eventId) {
+            return  commentRepository
+                    .findByEventEntity_Id(eventId, Sort.by("added").descending())
+                    .stream()
+                    .map(commentEntity -> new CommentDto(commentEntity.getId(),
+                            commentEntity.getCommentText(),
+                            commentEntity.getAdded(),
+                            commentEntity.getUserEntity().getEmail()))
+                    .collect(Collectors.toList());
+        }
+    }
+

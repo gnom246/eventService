@@ -5,6 +5,8 @@
     <title>Aggregated events service</title>
 </head>
 <body>
+<div th:include="homePage::searching"></div>
+<br>
 <table>
     <tr th:each="searchedEvent : ${searchedEvents}" >
         <td><a th:text="${searchedEvent.title}" th:href="@{/events/} + ${searchedEvent.id}"></a></td>

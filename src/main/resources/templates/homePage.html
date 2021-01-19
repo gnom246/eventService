@@ -23,11 +23,22 @@
 </div>
 
 <br>
-<form th:action="@{/find-events-by-title-part}" method="get">
-    <input type="text" name="titlePart" placeholder="Search by title part...">
-    <input type="submit" value="Search Event">
-</form>
 
+<th:block th:fragment="searching">
+<form th:action="@{/find-events-by-title-part}" method="get">
+    Title like: <input type="search" th:value="${titlePart}" name="titlePart" placeholder="Search by title part...">
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">Period</label>
+        <select name="period" class="form-control" id="exampleFormControlSelect1">
+            <option th:value="${all}">All</option>
+            <option th:value="${future}">Future</option>
+            <option th:value="${presentOrFuture}">Present or Future</option>
+        </select>
+    </div>
+    <input type="submit" value="Search Event">
+
+</form>
+</th:block>
 <h4>Nearest events:</h4>
 <table>
     <tr th:each="event : ${events}" >
