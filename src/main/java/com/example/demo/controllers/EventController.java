@@ -72,6 +72,13 @@ public class EventController {
         if (principal != null) {
             String email = principal.getName();
             model.addAttribute("email", email);
+
+            boolean ifUserSignedForEvent = eventService.getUsersEmailsForEvent(eventId).contains(email);
+            model.addAttribute("ifUserSignedForEvent", ifUserSignedForEvent);
+
+            final List<UsersDto> usersSignedForEvent = eventService.getUsersForEvent(eventId);
+            model.addAttribute("usersSignedForEvent", usersSignedForEvent);
+
         }
         final Optional<EventDetails> eventDetailsOptional = eventService.getSingleEventInfo(eventId);
 
@@ -107,4 +114,18 @@ public class EventController {
             return "redirect:/events/" + eventId;
         } return "redirect:/events/" + eventId;
     }
+
+    @PostMapping("/events/{eventId}/signUpForEvent")
+    public String signUpForEvent(@PathVariable Long eventId, Model model,
+                                      Principal principal) {
+
+        if (principal != null) {
+            String email = principal.getName();
+            model.addAttribute("email", email);
+
+            eventService.signUp(eventId, email);
+        }
+        return "redirect:/events/" + eventId;
+    }
+
 }

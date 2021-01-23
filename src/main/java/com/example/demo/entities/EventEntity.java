@@ -7,9 +7,11 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Set;
 
 
-    @Entity
+@Entity
     @Table(name = "events")
     public class EventEntity {
 
@@ -28,6 +30,18 @@ import java.time.format.DateTimeFormatter;
     @ManyToOne
     @JoinTable(name = "users_evnts")
     private UserEntity userEntity;
+
+    @ManyToMany
+    @JoinTable(name = "participants_in_enevts")
+    private Set<UserEntity> participants = new HashSet<>();
+
+    public Set<UserEntity> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(Set<UserEntity> participants) {
+        this.participants = participants;
+    }
 
     public void setStartDate(String startDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

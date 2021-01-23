@@ -9,6 +9,7 @@ import com.example.demo.entities.UserEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -27,7 +28,7 @@ public class UserService {
     public Optional<UserEntity> findUser(NewUserFormDto newUserFormDto) {
         return userRepository.findUserByEmail(newUserFormDto.getEmail());
     }
-
+    @Transactional
     public void registerUser(NewUserFormDto newUserFormDto) {
         final UserEntity userEntity = new UserEntity();
         userEntity.setEmail(newUserFormDto.getEmail());

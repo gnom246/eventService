@@ -26,6 +26,8 @@ public class UserEntity {
 
     private LocalDateTime created = LocalDateTime.now();
 
+
+
     public Long getId() {
         return id;
     }

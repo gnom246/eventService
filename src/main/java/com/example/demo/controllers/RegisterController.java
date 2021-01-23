@@ -43,6 +43,6 @@ public class RegisterController {
             return "redirect:/register/";
         }
         userService.registerUser(newUserFormDto);
-        return "redirect:/";
+        return "thankYou";
     }
 }
