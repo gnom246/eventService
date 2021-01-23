@@ -147,5 +147,18 @@ public class EventService {
                             commentEntity.getUserEntity().getEmail()))
                     .collect(Collectors.toList());
         }
+
+    public List<EventDetails> getFutureEvents() {
+        return eventRepository.findAll()
+                .stream()
+                .filter(eventEntity -> eventEntity.getEndDate().isAfter(LocalDate.now()))
+                .map(eventEntity -> new EventDetails(eventEntity.getId(),
+                        eventEntity.getTitle(),
+                        eventEntity.getBody(),
+                        eventEntity.getStartDateAsString(),
+                        eventEntity.getEndDateAsString()))
+                .collect(Collectors.toList());
+
     }
+}
 

@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Aggregated events service</title>
-<!--    <th:block th:replace="index::headScripts"></th:block>-->
+
 </head>
 <body>
+<!--<th:block th:replace="index::headScripts"></th:block>-->
 
-<!--<div th:include="index.html"></div>-->
 <th:block th:fragment="heading">
+
 <h2>Aggregated events service</h2>
 
 <div th:if="${email != null}">
@@ -26,16 +27,19 @@
 </th:block>
 
 <th:block th:fragment="searching">
-<form th:action="@{/find-events-by-title-part}" method="get">
+<form th:action="@{/find-events}" method="get">
     Title like: <input type="search" th:value="${titlePart}" name="titlePart" placeholder="Search by title part...">
-    <div class="form-group">
-        <label for="exampleFormControlSelect1">Period</label>
-        <select name="period" class="form-control" id="exampleFormControlSelect1">
-            <option th:value="${all}">All</option>
-            <option th:value="${future}">Future</option>
-            <option th:value="${presentOrFuture}">Present or Future</option>
-        </select>
-    </div>
+    Choose period: <input type="search" th:value="${selectedPeriod}" name="selectedPeriod" placeholder="Search by period...">
+
+<!--    <div class="form-group">-->
+<!--        <label for="exampleFormControlSelect1">Period</label>-->
+<!--         <select select th:object="${periodValues}" class="form-control" id="exampleFormControlSelect1">-->
+<!--            <option th:each="period: ${periodValues}"-->
+<!--                    th:value="${selectedPeriod}" name="selectedPeriod"-->
+<!--                    th:text="${period}">-->
+<!--            </option>-->
+<!--        </select>-->
+<!--    </div>-->
     <input type="submit" value="Search Event">
 
 </form>

@@ -47,23 +47,24 @@ public class EventController {
             return "redirect:/";
         } return "redirect:/";
     }
-    @GetMapping("/find-events-by-title-part")
-    public String showEventsByTitlePart(@RequestParam String titlePart,
-                                        @RequestParam String period,
-                                        Model model,
-                                        Principal principal) {
-        if (principal != null) {
+
+@GetMapping("/find-events")
+public String showEventsByTitlePartAndPeriod(Model model,
+                                             @RequestParam String titlePart,
+                                             @RequestParam String selectedPeriod,
+                                             Principal principal) {
+model.addAttribute("titlePart", titlePart);
+model.addAttribute("selectedPeriod", selectedPeriod);
+
+    if (principal != null) {
             String email = principal.getName();
             model.addAttribute("email", email);
         }
-        List<EventShortInfo> searchedEvents = eventService.getEventsByTitlePartAndPeriod(titlePart, period);
-//        Period period1;
+        List<EventShortInfo> searchedEvents = eventService.getEventsByTitlePartAndPeriod(titlePart, selectedPeriod);
         model.addAttribute("searchedEvents", searchedEvents);
-        model.addAttribute("titlePart", titlePart);
-        model.addAttribute("period", period);
 
-        return "eventSearchingResult";
-    }
+    return "eventSearchingResult1";
+}
     @GetMapping("/events/{eventId}")
     public String showSingleEventPage(@PathVariable Long eventId, Model model,
                                       Principal principal) {
