@@ -18,8 +18,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.example.demo.dto.Period.FUTURE;
+
 @Service
 public class EventService {
+
 
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
@@ -48,12 +51,6 @@ public class EventService {
 
         eventEntity.setUserEntity(userEntity);
 
-//        final String roleName = "OWNER";
-//        RoleEntity roleEntity = roleRepository
-//                .findRolesEntityByRoleName(roleName)
-//                .orElseGet(() -> roleRepository.save(new RoleEntity(roleName)));
-//
-//        userEntity.addRole(roleEntity);
         eventRepository.save(eventEntity);
     }
 
@@ -78,8 +75,8 @@ public class EventService {
                         eventEntity.getStartDateAsString(),
                         eventEntity.getEndDateAsString()));
     }
-    public List<EventShortInfo> getEventsByTitlePartAndPeriod(String titlePart, String period) {
-        if ("future".equals(period)) {
+    public List<EventShortInfo> getEventsByTitlePartAndPeriod(String titlePart, Period period) {
+        if (FUTURE==period) {
             return eventRepository.findByTitleContaining(titlePart, Sort.by("endDate"))
                     .stream()
                     .filter(eventEntity -> eventEntity.getEndDate().isAfter(LocalDate.now()))
@@ -90,7 +87,7 @@ public class EventService {
                             eventEntity.getEndDateAsString()))
                     .collect(Collectors.toList());
 
-        } else if ("presentOrFuture".equals(period)) {
+        } else if (Period.PRESENT_AND_FUTURE==period) {
             return eventRepository.findByTitleContaining(titlePart, Sort.by("endDate"))
                     .stream()
                     .filter(eventEntity -> eventEntity.getEndDate().isAfter(LocalDate.now().minusDays(1)))

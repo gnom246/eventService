@@ -48,15 +48,16 @@ public class EventController {
         } return "redirect:/";
     }
 
-@GetMapping("/find-events")
-public String showEventsByTitlePartAndPeriod(Model model,
+    @GetMapping("/find-events")
+    public String showEventsByTitlePartAndPeriod(Model model,
                                              @RequestParam String titlePart,
-                                             @RequestParam String selectedPeriod,
+                                             @RequestParam Period selectedPeriod,
                                              Principal principal) {
-model.addAttribute("titlePart", titlePart);
-model.addAttribute("selectedPeriod", selectedPeriod);
+        model.addAttribute("titlePart", titlePart);
+        Period[] periodValues = Period.values();
+        model.addAttribute("periodValues", periodValues);
 
-    if (principal != null) {
+        if (principal != null) {
             String email = principal.getName();
             model.addAttribute("email", email);
         }
