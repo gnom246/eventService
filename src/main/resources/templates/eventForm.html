@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<div th:include="homePage::heading"></div>
+
 <form th:action="@{/addEvent}" th:object="${newEventForm}" method="post">
 Title: <input type="text" th:field="*{title}" placeholder="Enter event title...">
 <span th:errors="*{title}"></span>

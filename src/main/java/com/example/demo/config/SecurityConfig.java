@@ -32,14 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login-submit-data")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .failureUrl("/login-submit-data?status=error")
+                .failureUrl("/loginerror")
                 .defaultSuccessUrl("/")
-//            .and()
-//                .logout()
-////                .logoutUrl("/logout-user-spring")
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-//                .logoutSuccessUrl("/")
-//                .invalidateHttpSession(true)
         ;
     }
 
@@ -49,11 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .dataSource(dataSource)
                 .usersByUsernameQuery("SELECT u.email, u.password, 1 " +
                         "FROM users u WHERE u.email = ?")
-//                .authoritiesByUsernameQuery("SELECT u.email, r.role_name " +
-//                        "FROM users u " +
-//                        "JOIN users_roles ur ON u.id = ur.user_entity_id " +
-//                        "JOIN roles r ON ur.roles_id = r.id " +
-//                        "WHERE u.email = ?")
                 .authoritiesByUsernameQuery("SELECT u.email, r.role_name " +
                         "FROM users u " +
                         "JOIN users_roles ur ON u.id = ur.user_entity_id " +

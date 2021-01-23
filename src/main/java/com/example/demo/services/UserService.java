@@ -9,6 +9,8 @@ import com.example.demo.entities.UserEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     private final UserDao userDao;
@@ -21,6 +23,9 @@ public class UserService {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+    public Optional<UserEntity> findUser(NewUserFormDto newUserFormDto) {
+        return userRepository.findUserByEmail(newUserFormDto.getEmail());
     }
 
     public void registerUser(NewUserFormDto newUserFormDto) {

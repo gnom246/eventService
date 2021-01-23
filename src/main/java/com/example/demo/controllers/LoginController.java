@@ -6,14 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LoginController {
 
-//    private final LoginService loginService;
-//
-//    public LoginController(LoginService loginService) {
-//        this.loginService = loginService;
-//    }
-
     @GetMapping("/login")
-    public String showLoginForm(){
+    public String showLoginForm() {
         return "loginForm";
+    }
+
+    @GetMapping("/loginerror")
+    public String loginError() {
+        return "noUserFound";
     }
 }

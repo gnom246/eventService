@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dto.EventShortInfo;
+import com.example.demo.dto.Period;
 import com.example.demo.services.EventService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -8,7 +8,7 @@
 <body>
 
 <!--<div th:include="index.html"></div>-->
-
+<th:block th:fragment="heading">
 <h2>Aggregated events service</h2>
 
 <div th:if="${email != null}">
@@ -23,6 +23,7 @@
 </div>
 
 <br>
+</th:block>
 
 <th:block th:fragment="searching">
 <form th:action="@{/find-events-by-title-part}" method="get">

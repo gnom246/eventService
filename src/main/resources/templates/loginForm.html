@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<div th:include="homePage::heading"></div>
+
 <form th:action="@{/login-submit-data}" method="post">
     <input type="text" name="email" placeholder="Enter your email...">
     <br>

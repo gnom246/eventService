@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<div th:include="homePage::heading"></div>
+
 <h3 th:text="${event.title}"></h3>
 <div th:text="${event.startDate}"></div>
 <div th:text="${event.endDate}"></div>
@@ -25,7 +27,7 @@
 <div>
   <form th:action="@{/events/{eventId}/comment/add(eventId=${event.id})}" th:object="${commentFormDto}" method="post">
     Your comment: <textarea th:field="*{body}" rows="10" cols="50"></textarea>
-    <span th:errors="*{body}"></span>
+      <p th:if="${msg != null}" th:text="${msg}"></p>
     <br>
     <input type="submit" value="Add comment">
   </form>

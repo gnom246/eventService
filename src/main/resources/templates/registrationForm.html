@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<div th:include="homePage::heading"></div>
+
 <form th:action="@{/register}" th:object="${newUserFormDto}" method="post">
     <label>E-mail:</label> <input type="email" th:field="*{email}">
     <span th:errors="*{email}"></span>
@@ -16,7 +18,10 @@
     <label>Password:</label> <input type="password" th:field="*{password}">
     <span th:errors="*{password}"></span>
     <br>
+    <p th:if="${message != null}" th:text="${message}"></p>
+    <br>
     <input type="submit" value="Register">
+
 </form>
 
 </body>

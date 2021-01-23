@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -22,7 +23,12 @@ public class EventController {
     }
 
     @GetMapping("/addEvent")
-    public String showEventForm(Model model) {
+    public String showEventForm(Model model,
+                                Principal principal) {
+        if (principal != null) {
+            String email = principal.getName();
+            model.addAttribute("email", email);
+        }
         final NewEventForm newEventForm = new NewEventForm();
         model.addAttribute("newEventForm", newEventForm);
         return "eventForm";
@@ -44,8 +50,12 @@ public class EventController {
     @GetMapping("/find-events-by-title-part")
     public String showEventsByTitlePart(@RequestParam String titlePart,
                                         @RequestParam String period,
-                                        Model model) {
-
+                                        Model model,
+                                        Principal principal) {
+        if (principal != null) {
+            String email = principal.getName();
+            model.addAttribute("email", email);
+        }
         List<EventShortInfo> searchedEvents = eventService.getEventsByTitlePartAndPeriod(titlePart, period);
 //        Period period1;
         model.addAttribute("searchedEvents", searchedEvents);
@@ -55,8 +65,12 @@ public class EventController {
         return "eventSearchingResult";
     }
     @GetMapping("/events/{eventId}")
-    public String showSingleEventPage(@PathVariable Long eventId, Model model) {
-
+    public String showSingleEventPage(@PathVariable Long eventId, Model model,
+                                      Principal principal) {
+        if (principal != null) {
+            String email = principal.getName();
+            model.addAttribute("email", email);
+        }
         final Optional<EventDetails> eventDetailsOptional = eventService.getSingleEventInfo(eventId);
 
         if (eventDetailsOptional.isEmpty()) {
@@ -73,25 +87,21 @@ public class EventController {
         return "singleEventView";
     }
 
-//    @GetMapping("/events/{eventId}/comment/add")
-//    public String commentAddingValidation(@PathVariable Long eventId, Model model) {
-//        final CommentFormDto commentFormDto = new CommentFormDto();
-//        model.addAttribute("commentFormDto", commentFormDto);
-//        return "singleEventView";
-//    }
 
     @PostMapping("/events/{eventId}/comment/add")
     public String handleNewCommentForm(@ModelAttribute @Valid CommentFormDto commentFormDto,
                                        BindingResult bindingResult,
                                        Principal principal,
-                                       @PathVariable Long eventId) {
+                                       @PathVariable Long eventId,
+                                       RedirectAttributes redirectAttributes) {
+
         if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("msg", "Description should have max 500 characters");
             return "redirect:/events/" + eventId;
         }
         if (principal != null) {
             String email = principal.getName();
             eventService.addNewComment(eventId, commentFormDto, email);
-
             return "redirect:/events/" + eventId;
         } return "redirect:/events/" + eventId;
     }
