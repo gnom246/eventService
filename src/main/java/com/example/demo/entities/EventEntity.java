@@ -1,11 +1,7 @@
 package com.example.demo.entities;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
@@ -59,10 +55,6 @@ import java.util.Set;
             return endDate.toString();
         }
 
-        public LocalDate getStartDate() {
-            return startDate;
-        }
-
         public LocalDate getEndDate() {
             return endDate;
         }
@@ -89,10 +81,6 @@ import java.util.Set;
 
         public void setBody(String body) {
             this.body = body;
-        }
-
-        public UserEntity getUserEntity() {
-            return userEntity;
         }
 
         public void setUserEntity(UserEntity userEntity) {

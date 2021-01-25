@@ -1,13 +1,9 @@
 package com.example.demo.dto;
 
-import com.example.demo.entities.EventEntity;
-import com.example.demo.entities.UserEntity;
+
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 
 @Getter

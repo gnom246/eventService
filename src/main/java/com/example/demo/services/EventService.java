@@ -176,16 +176,6 @@ public class EventService {
         }
     }
 
-//    @Transactional
-//    public boolean checkIfUserSignedForEvent(Long eventId, String email) {
-//        final Optional<EventEntity> eventEntity = eventRepository.findById(eventId);
-//        final Optional<UserEntity> userEntity = userRepository.findUserByEmail(email);
-//        if (!eventEntity.isEmpty() && !userEntity.isEmpty()) {
-//            return eventEntity.get().getParticipants().contains(userEntity);
-//        } else {
-//            return false;
-//        }
-//    }
     @Transactional
     public List<UsersDto> getUsersForEvent(Long eventId) {
         return eventRepository.findById(eventId).get().getParticipants()

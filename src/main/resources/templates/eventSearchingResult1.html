@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Aggregated events service</title>
+    <div th:include="index::head"></div>
 </head>
 <body>
 <div th:include="homePage::heading"></div>
@@ -12,10 +13,12 @@
 
 <form th:action="@{/find-events}" method="get">
     <tr th:each="searchedEvent : ${searchedEvents}" >
+        <th:block th:replace="index::eventSearched">
         <td><a th:text="${searchedEvent.title}" th:href="@{/events/{searchedEventId}(searchedEventId=${searchedEvent.id})}"></a></td>
         <td><a th:text="${searchedEvent.startDate}"></a></td>
         <td> - <a th:text="${searchedEvent.endDate}"></a></td>
         <td><a th:text="${#strings.abbreviate(searchedEvent.body, 50)}"></a></td>
+        </th:block>
     </tr>
 </form>
 </table>

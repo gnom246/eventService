@@ -3,33 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>Aggregated events service</title>
-
+    <div th:include="index::head"></div>
 </head>
 <body>
-<!--<th:block th:replace="index::headScripts"></th:block>-->
-
 <th:block th:fragment="heading">
 
-<h2>Aggregated events service</h2>
+<div th:include="index::headScripts"></div>
+
 
 <div th:if="${email != null}">
+    <div th:replace="index::Logged">
     You are logged as: <span th:text="${email}"></span>
     <br>
     <a th:href="@{/addEvent}" >Add event</a>
+    </div>
 </div>
 
 <div th:unless="${email != null}">
+    <div th:replace="index::notLogged">
     <a th:href="@{/login}" >Login</a>
     <a th:href="@{/register}" >Register</a>
+    </div>
 </div>
 
-<br>
+    <th:block th:replace="index::AES">
+        <h2>Aggregated events service</h2>
+    </th:block>
+
 </th:block>
 
 <th:block th:fragment="searching">
-<form th:action="@{/find-events}" method="get">
-    Title like: <input type="search" th:value="${titlePart}" name="titlePart" placeholder="Search by title part...">
 
+<form th:action="@{/find-events}" method="get">
+
+    <th:block th:replace="index::searchingForm">
+
+    Title like: <input type="search" th:value="${titlePart}" name="titlePart" placeholder="Search by title part...">
     <div class="form-group">
         <label for="exampleFormControlSelect1">Period</label>
          <select th:object="${periodValues}" name="selectedPeriod" class="form-control" id="exampleFormControlSelect1">
@@ -41,15 +50,18 @@
     </div>
     <input type="submit" value="Search Event">
 
+    </th:block>
 </form>
-</th:block>
+
 <h4>Nearest events:</h4>
 <table>
     <tr th:each="event : ${events}" >
-        <td><a th:text="${event.title}" th:href="@{/events/} + ${event.id}"></a></td>
+        <th:block th:replace="index::event">
+        <td><a th:text="@{/events/{eventId}(eventId=${event.id})}"></a></td>
         <td><a th:text="${event.startDate}"></a></td>
         <td> - <a th:text="${event.endDate}"></a></td>
         <td><a th:text="${#strings.abbreviate(event.body, 50)}"></a></td>
+        </th:block>
     </tr>
 </table>
 

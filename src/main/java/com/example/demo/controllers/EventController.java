@@ -1,7 +1,6 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dto.*;
-import com.example.demo.entities.CommentEntity;
 import com.example.demo.services.EventService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

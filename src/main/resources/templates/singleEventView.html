@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Aggregated events service</title>
+    <div th:include="index::head"></div>
 </head>
 <body>
 
 <div th:include="homePage::heading"></div>
 
+<th:block th:replace="index::eventDetail">
 <h3 th:text="${event.title}"></h3>
 <div th:text="${event.startDate}"></div>
 <div th:text="${event.endDate}"></div>
 <div th:text="${event.body}"></div>
+</th:block>
 
 <br>
 
@@ -28,17 +31,19 @@
 
 <br>
 <table>
+    <div th:if="${email != null}">
     <label>Users signed up for this event:</label>
     <tr th:each="userSigned : ${usersSignedForEvent}" >
         <td><a th:text="${userSigned.email}"></a></td>
     </tr>
+    </div>
 </table>
 
 <br>
 <table>
     <label>Comments:</label>
     <tr th:each="comment : ${comments}" >
-        <td><a th:text="${comment.commentText}"></a></td>
+        <td><p th:text="${comment.commentText}"></p></td>
         <td><a th:text="${#temporals.format(comment.added, 'yyyy-MM-dd HH:mm')}"></a></td>
         <td><a th:text="${comment.email}"></a></td>
     </tr>
@@ -47,10 +52,12 @@
 
 <div>
   <form th:action="@{/events/{eventId}/comment/add(eventId=${event.id})}" th:object="${commentFormDto}" method="post">
-    Your comment: <textarea th:field="*{body}" rows="10" cols="50"></textarea>
+      <p> Add Your comment: </p>
+      <textarea th:field="*{body}" rows="3" cols="60"></textarea>
       <p th:if="${msg != null}" th:text="${msg}"></p>
     <br>
     <input type="submit" value="Add comment">
+      <br>
   </form>
 </div>
 

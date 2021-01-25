@@ -1,6 +1,5 @@
 package com.example.demo.dao;
 
-import com.example.demo.entities.RoleEntity;
 import com.example.demo.entities.UserEntity;
 import org.springframework.stereotype.Repository;
 

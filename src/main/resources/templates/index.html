@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Aggregated events service</title>
 
+    <th:block th:fragment="head">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </th:block>
 
 </head>
 <body>
@@ -13,40 +15,119 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</th:block>
 
-
-<nav class="navbar navbar-dark bg-dark">>
-    <a class="navbar-brand">Aggregated events service</a>
+<th:block th:fragment="notLogged">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" th:href="@{/}">Home</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a th:unless="${email != null}">
                 <a class="nav-link" th:href="@{/login}">Login <span class="sr-only">(current)</span></a>
-                </a>
             </li>
-
             <li class="nav-item">
-                <a th:unless="${email != null}">
                 <a class="nav-link" th:href="@{/register}">Register<span class="sr-only">(current)</span></a>
-                </a>
             </li>
-            <li class="nav-item">
-                <a th:unless="${email != null}">
-                    You are logged as: <a class="nav-link" th:text="${email}"><span class="sr-only">(current)</span></a>
-                    <a class="nav-link" th:href="@{/addEvent}">Add event<span class="sr-only">(current)</span></a>
-                </a>
-            </li>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
         </ul>
     </div>
+    </nav>
+</th:block>
+
+<th:block th:fragment="Logged">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" th:href="@{/}">Home</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link">You are logged as: <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:text="${email}"><span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/addEvent}">Add event<span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>
+
+<th:block th:fragment="AES">
+<nav>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h2 class="display-32">Aggregated events service</h2>
+                  </div>
+        </div>
 </nav>
-    </th:block>
+
+</th:block>
+
+
+    <th:block th:fragment="searchingForm">
+    <div class="form-row align-items-center">
+
+        <div class="col-3">
+            <label class="sr-only" for="inlineFormInputGroup">Name</label>
+            <input type="search" th:value="${titlePart}" name="titlePart" class="form-control" placeholder="Search event by title part...">
+        </div>
+        <div class="col-auto">
+            <label class="sr-only" for="inlineFormInputGroup">Username</label>
+        <div class="form-group">
+            <label for="exampleFormControlSelect1"></label>
+            <select th:object="${periodValues}" name="selectedPeriod" class="form-control" id="exampleFormControlSelect1">
+                <option th:each="period: ${periodValues}"
+                        th:value="${period}"
+                        th:text="${period}">
+                </option>
+            </select>
+        </div>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-2">Search Event</button>
+        </div>
+    </div>
+</th:block>
+
+<th:block th:fragment="eventDetail">
+<div class="card" style="width: 100%;">
+    <div class="card-body">
+       <h6><a class="card-title" th:text="${event.title}" th:href="@{/events/{eventId}(eventId=${event.id})}">Card title</a></h6>
+        <a th:text="${event.startDate}"></a></td>
+         - <a th:text="${event.endDate}"></a></td>
+        <p class="card-text" th:text="${event.body}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+</div>
+</th:block>
+
+<th:block th:fragment="event">
+    <div class="card" style="width: 100%;">
+        <div class="card-body">
+            <h6><a class="card-title" th:text="${event.title}" th:href="@{/events/{eventId}(eventId=${event.id})}">Card title</a></h6>
+            <a th:text="${event.startDate}"></a></td>
+            - <a th:text="${event.endDate}"></a></td>
+            <p class="card-text" th:text="${#strings.abbreviate(event.body, 50)}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+    </div>
+</th:block>
+
+
+<th:block th:fragment="eventSearched">
+    <div class="card" style="width: 100%;">
+        <div class="card-body">
+            <h6><a class="card-title" th:text="${searchedEvent.title}" th:href="@{/events/{searchedEventId}(searchedEventId=${searchedEvent.id})}">Card title</a></h6>
+            <a th:text="${searchedEvent.startDate}"></a></td>
+            - <a th:text="${searchedEvent.endDate}"></a></td>
+            <p class="card-text" th:text="${#strings.abbreviate(searchedEvent.body, 50)}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+    </div>
+</th:block>
+
 </body>
 </html>
